@@ -54,7 +54,7 @@ namespace WK_34.Repositories
             ValidatePublishedYear(publishedYear);
             ValidateId(authorId);
 
-            CheckAuthorExistById(authorId);
+            await CheckAuthorExistById(authorId);
 
             var book = new BookEntity
             {
@@ -76,7 +76,7 @@ namespace WK_34.Repositories
             ValidatePublishedYear(book.PublishedYear);
             ValidateId(book.AuthorId);
 
-            CheckAuthorExistById(book.AuthorId);
+            await CheckAuthorExistById(book.AuthorId);
 
             var bookEntity = await GetEntityByIdAsync(book.Id);
 
@@ -99,11 +99,11 @@ namespace WK_34.Repositories
             return true;
         }
 
-        private async void CheckAuthorExistById (int id)
+        private async Task CheckAuthorExistById (int id)
         {
             var authorExists = await _context.Authors.AnyAsync(a => a.Id == id);
             if (!authorExists)
-                throw new Exception($"Author with ID {id} not found");
+                throw new Exception($"Author not found");
         }
         private async Task<BookEntity> GetEntityByIdAsync(int id)
         {
@@ -112,7 +112,7 @@ namespace WK_34.Repositories
 
             if (bookEntity == null)
             {
-                throw new Exception($"Book with ID {id} not found");
+                throw new Exception($"Book not found");
             }
             return bookEntity;
         }
